@@ -2,6 +2,7 @@ package uk.tw.energy.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.tw.energy.domain.MeterReadings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +26,8 @@ public class MeterReadingServiceTest {
 
     @Test
     public void givenMeterReadingThatExistsShouldReturnMeterReadings() {
-        meterReadingService.storeReadings("random-id", new ArrayList<>());
-        assertThat(meterReadingService.getReadings("random-id")).isEqualTo(Optional.of(new ArrayList<>()));
+        MeterReadings toInsert = new MeterReadings("random-id", new ArrayList<>());
+        meterReadingService.storeReadings(toInsert);
+        assertThat(meterReadingService.getReadings("random-id")).isEqualTo(Optional.of(toInsert));
     }
 }

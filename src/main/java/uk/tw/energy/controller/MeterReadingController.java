@@ -30,7 +30,7 @@ public class MeterReadingController {
         if (!isMeterReadingsValid(meterReadings)) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        meterReadingService.storeReadings(meterReadings.getSmartMeterId(), meterReadings.getElectricityReadings());
+        meterReadingService.storeReadings(meterReadings);
         return ResponseEntity.ok().build();
     }
 
@@ -43,9 +43,9 @@ public class MeterReadingController {
 
     @GetMapping("/read/{smartMeterId}")
     public ResponseEntity readReadings(@PathVariable String smartMeterId) {
-        Optional<List<ElectricityReading>> readings = meterReadingService.getReadings(smartMeterId);
+        Optional<MeterReadings> readings = meterReadingService.getReadings(smartMeterId);
         return readings.isPresent()
-                ? ResponseEntity.ok(readings.get())
+                ? ResponseEntity.ok(readings.get().getElectricityReadings())
                 : ResponseEntity.notFound().build();
     }
 }

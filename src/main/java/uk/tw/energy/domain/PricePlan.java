@@ -1,6 +1,7 @@
 package uk.tw.energy.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,6 +40,13 @@ public class PricePlan {
                 .orElse(unitRate);
     }
 
+    public BigDecimal calculateCost(MeterReadings meterReadings) {
+        BigDecimal average = meterReadings.calculateAverageReading();
+        BigDecimal timeElapsed = meterReadings.calculateTimeElapsed();
+
+        BigDecimal averagedCost = average.divide(timeElapsed, RoundingMode.HALF_UP);
+        return averagedCost.multiply(this.getUnitRate());
+    }
 
     static class PeakTimeMultiplier {
 
